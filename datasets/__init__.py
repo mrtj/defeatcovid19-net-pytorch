@@ -1,3 +1,4 @@
 from .chest_xray_pneumonia_dataset import ChestXRayPneumoniaDataset
 from .covid_chestxray_dataset import COVIDChestXRayDataset
 from .nih_cx38_dataset import NIHCX38Dataset
+from .torchxrayvision_dataset import TorchXRayVisionDataset

@@ -1,7 +1,7 @@
 import copy
 import diagnostics
 from pathlib import Path
-from datasets import ChestXRayPneumoniaDataset, COVIDChestXRayDataset, NIHCX38Dataset
+from datasets import ChestXRayPneumoniaDataset, COVIDChestXRayDataset, NIHCX38Dataset, TorchXRayVisionDataset
 from models import Resnet34
 from trainer import Trainer
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -25,13 +25,30 @@ n_splits = 5
 
 # Pretrain with Chest XRay Pneumonia dataset (>5k images)
 pneumonia_classifier = Resnet34()
+
 dataset = ChestXRayPneumoniaDataset(Path('input/chest-xray-pneumonia'), size)
+
+# # Example usage of NIHCX38Dataset:
 # dataset = NIHCX38Dataset(Path('input/nih-cx38'), size, balance=True)
+
+# # Example usage of TorchXRayVisionDataset (see also https://github.com/mlmed/torchxrayvision)
+# import torchvision
+# import torchxrayvision as xrv
+# transform = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(),
+#                                             xrv.datasets.XRayResizer(size)])
+# kaggle_dataset = xrv.datasets.Kaggle_Dataset(
+#     imgpath='dataset_folder/image_folder',
+#     csvpath='dataset_folder/stage_2_train_labels.csv',
+#     transform=transform)
+# dataset = TorchXRayVisionDataset(kaggle_dataset, balance=True)
+
+
 train_idx, validation_idx = train_test_split(
     list(range(len(dataset))),
     test_size=0.2,
     stratify=dataset.labels
 )
+
 trainer = Trainer(pneumonia_classifier, dataset, batch_size, train_idx, validation_idx)
 trainer.run(max_epochs=2)
 
