@@ -1,7 +1,7 @@
 import copy
 import diagnostics
 from pathlib import Path
-from datasets import ChestXRayPneumoniaDataset, COVIDChestXRayDataset, NIHCX38Dataset, TorchXRayVisionDataset
+from datasets import ChestXRayPneumoniaDataset, COVIDChestXRayDataset, NIHCX38Dataset
 from models import Resnet34
 from trainer import Trainer
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -34,6 +34,8 @@ dataset = ChestXRayPneumoniaDataset(Path('input/chest-xray-pneumonia'), size)
 # # Example usage of TorchXRayVisionDataset (see also https://github.com/mlmed/torchxrayvision)
 # import torchvision
 # import torchxrayvision as xrv
+# from datasets import TorchXRayVisionDataset
+#
 # transform = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(),
 #                                             xrv.datasets.XRayResizer(size)])
 # kaggle_dataset = xrv.datasets.Kaggle_Dataset(
