@@ -6,10 +6,35 @@ from torch.utils.data import Dataset
 
 class NIHCX38Dataset(Dataset):
     ''' Integrates the National Institutes of Health Clinical Center chest x-ray dataset.
-    
+
     Dataset description: https://www.nih.gov/news-events/news-releases/nih-clinical-center-provides-one-largest-publicly-available-chest-x-ray-datasets-scientific-community
-    Download the dataset from https://nihcc.app.box.com/v/ChestXray-NIHCC to the folder input/nih-cx38
-    Extract all image_??.tar.gz to the input/nih-cx38/images/ folder and ensure input/nih-cx38/Data_Entry_2017.csv is present.
+
+    To use this class:
+
+    - Download the dataset from https://nihcc.app.box.com/v/ChestXray-NIHCC
+      to the folder `input/nih-cx38`.
+    - Extract all `image_??.tar.gz` to the `input/nih-cx38/images/` folder and
+      ensure `input/nih-cx38/Data_Entry_2017.csv` is present.
+
+    Example usage of NIHCX38Dataset::
+
+        dataset = NIHCX38Dataset(Path('input/nih-cx38'), 224, balance=True)
+
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Path to the dataset artifacts
+
+    size : int
+        Resize images to this size.
+
+    augment : callable
+        If not None, will be called with the image instance.
+
+    balance : bool
+        If set to True, create a balanced dataset by undersampling the category
+        class with higher number of instances.
     '''
 
     def __init__(self, path, size=128, augment=None, balance=False):

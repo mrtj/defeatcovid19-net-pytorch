@@ -1,15 +1,58 @@
-import cv2
-import pandas as pd
 import numpy as np
-from PIL import Image
 from torch.utils.data import Dataset
 
-import torchxrayvision as xrv
-
 class TorchXRayVisionDataset(Dataset):
-    ''' This class is an adapter for torchxrayvision datasets.
-    
+    '''
+    TorchXRayVision Dataset
+
+    The TorchXRayVisionDataset class in wraps a torchxrayvision.dataset
+    instance to a dataset used by this project, so all public datasets
+    supported by the `torchxrayvision`_ library can be used to train the model.
+
+    To use this dataset wrapper:
+     - install torchxrayvision with `pip install torchxrayvision`,
+     - download one of the datasets supported by torchxrayvision
+       (see `torchxrayvision.datasets`_ module)
+     - create an instance of one of the `torchxrayvision.datasets`_ classes,
+     - pass this instance to  the TorchXRayVisionDataset_ initializer.
+
     More info: https://github.com/mlmed/torchxrayvision
+
+    Example usage of TorchXRayVisionDataset::
+
+        import torchvision
+        import torchxrayvision as xrv
+
+        transform = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(),
+                                                    xrv.datasets.XRayResizer(size)])
+
+        kaggle_dataset = xrv.datasets.Kaggle_Dataset(
+            imgpath='dataset_folder/image_folder',
+            csvpath='dataset_folder/stage_2_train_labels.csv',
+            transform=transform)
+
+        dataset = TorchXRayVisionDataset(kaggle_dataset, balance=True)
+
+    .. _torchxrayvision: https://github.com/mlmed/torchxrayvision
+    .. _torchxrayvision.datasets: https://github.com/mlmed/torchxrayvision/blob/master/torchxrayvision/datasets.py
+
+
+    Parameters
+    ----------
+    xrv_dataset : torchxrayvision.datasets.Dataset
+        The torchxrayvision dataset instance.
+
+    pathologies : list<str>
+        The list of pathology labels that should be evaluated as True label.
+        A subset of torchxrayvision.datasets.Dataset.pathologies property of 
+        your torchxrayvision dataset instance.
+
+    augment : callable
+        If not None, will be called with the image instance.
+
+    balance : bool
+        If set to True, create a balanced dataset by undersampling the category
+        class with higher number of instances.
     '''
 
     def __init__(self, xrv_dataset, pathologies=['Pneumonia'], augment=None, balance=False):

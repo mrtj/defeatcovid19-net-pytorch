@@ -28,23 +28,6 @@ pneumonia_classifier = Resnet34()
 
 dataset = ChestXRayPneumoniaDataset(Path('input/chest-xray-pneumonia'), size)
 
-# # Example usage of NIHCX38Dataset:
-# dataset = NIHCX38Dataset(Path('input/nih-cx38'), size, balance=True)
-
-# # Example usage of TorchXRayVisionDataset (see also https://github.com/mlmed/torchxrayvision)
-# import torchvision
-# import torchxrayvision as xrv
-# from datasets import TorchXRayVisionDataset
-#
-# transform = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(),
-#                                             xrv.datasets.XRayResizer(size)])
-# kaggle_dataset = xrv.datasets.Kaggle_Dataset(
-#     imgpath='dataset_folder/image_folder',
-#     csvpath='dataset_folder/stage_2_train_labels.csv',
-#     transform=transform)
-# dataset = TorchXRayVisionDataset(kaggle_dataset, balance=True)
-
-
 train_idx, validation_idx = train_test_split(
     list(range(len(dataset))),
     test_size=0.2,
